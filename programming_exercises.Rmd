@@ -1,7 +1,7 @@
 ---
 title: "Programming Exercises"
-author: "Your name"
-date: "October 18, 2017"
+author: "Jess Robinson"
+date: "April 29, 2019"
 output: github_document
 ---
 
@@ -16,38 +16,58 @@ library(tidyverse)
 ### Using a `for` loop
 
 ```{r}
-
+output <- vector("integer", length = ncol(iris))
+for (i in seq_along(iris)) {
+  output[[i]] <- length(iris[[i]])
+} 
+output
 ```
 
 ### Using a `map` function
 
 ```{r}
-
+map_int(iris, length)
 ```
 
 ## Calculate the square of each element in vector `x`
 
 ```{r}
+#calculate square of each value using base R
 x <- 1:30
-x
+x^2
+#create function to calculate square
+square <- function(a){
+  sqr <- a^2
+  return(sqr)
+}
+square(x)
 ```
 
 ### Using a `for` loop
 
 ```{r}
-
+output <- vector("double", length = length(x)) 
+for (i in seq_along(x)) {
+  output[[i]] <- square(x[[i]])
+} 
+output
 ```
 
 ### Using a `map` function
 
 ```{r}
-
+map_dbl(x, square)
 ```
 
 ## Write a function to calculate length of sides in a right-triangle using the Pythagorean Theorem
 
 ```{r}
-
+#given the hypotenuse, this calculates the sides of a right-triangle
+pythagorean <- function(c){
+  sides <- sqrt(c/2)
+  return(sides)
+}
+pythagorean(73)
 ```
 
 ## Session info
