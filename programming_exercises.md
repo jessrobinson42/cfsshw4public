@@ -102,6 +102,10 @@ pythagorean <- function(a = NULL , b = NULL, c = NULL) {
   sides <- c(a,b,c) 
   if (length(sides) <= 1 | length(sides) >= 3) {
   stop ("Please enter two sides.")
+  } else if (!is.null(c) && !is.null(a)  && (c <= a)) {
+  stop ("Please only enter c as the hypotenuse.")
+  } else if (!is.null(c) && !is.null(b)  && (c <= b)) {
+  stop ("Please only enter c as the hypotenuse.")
   } else if (!is.numeric(sides)) {
   stop ("Please enter numeric values.")
   } else if (is.null(c)) { 
@@ -133,7 +137,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                 
     ##  ctype    en_US.UTF-8                 
     ##  tz       America/Chicago             
-    ##  date     2019-04-28                  
+    ##  date     2019-04-29                  
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  package     * version date       lib source        

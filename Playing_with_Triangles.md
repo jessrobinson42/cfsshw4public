@@ -75,7 +75,3 @@ pythagorean5 <- function(a = NULL , b = NULL, c = NULL) {
   }
 }
 ```
-
-if ((length(sides) &lt;= 1) | (length(sides &gt;= 3))) { return ("Please enter two sides.") pythagorean(a) sides &lt;- sort(c(a, b, c))
-
-if ((is.null(a) && is.null(b)) | (is.null(b) && is.null(c))|(is.null(a) && is.null(c))){

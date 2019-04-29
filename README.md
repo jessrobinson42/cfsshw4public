@@ -12,7 +12,7 @@ Links to my homework solutions within this repository are as follows:
 
 *Bonus! Other Right-Triangle Functions* 
 
--   [playing_with_triangles.md file](playing_with_triangles.md)
+-   [Playing_with_Triangles.md file](Playing_with_Triangles.md)
 -   [playing_with_triangles.Rmd file](playing_with_triangles.Rmd)
 
 **Part 2: World Bank**
