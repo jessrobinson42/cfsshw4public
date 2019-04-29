@@ -10,7 +10,7 @@ Load necessary libraries
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
     ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
@@ -19,7 +19,7 @@ library(tidyverse)
 
     ## Warning: package 'dplyr' was built under R version 3.5.1
 
-    ## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -97,15 +97,24 @@ Write a function to calculate length of sides in a right-triangle using the Pyth
 -----------------------------------------------------------------------------------------------
 
 ``` r
-#given the hypotenuse, this calculates the sides of a right-triangle
-pythagorean <- function(c){
-  sides <- sqrt(c/2)
-  return(sides)
+#where c is the hypotenuse 
+pythagorean <- function(a = NULL , b = NULL, c = NULL) {
+  sides <- c(a,b,c) 
+  if (length(sides) <= 1 | length(sides) >= 3) {
+  stop ("Please enter two sides.")
+  } else if (!is.numeric(sides)) {
+  stop ("Please enter numeric values.")
+  } else if (is.null(c)) { 
+  return (sqrt(a^2 + b^2)) 
+  } else if (is.null(b)) { 
+  return (sqrt(c^2 - a^2)) 
+  } else if (is.null(a)){
+  return (sqrt(c^2 - b^2))    
+  } else {
+  stop ("Please try again.")
+  }
 }
-pythagorean(73)
 ```
-
-    ## [1] 6.041523
 
 Session info
 ------------
@@ -124,7 +133,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                 
     ##  ctype    en_US.UTF-8                 
     ##  tz       America/Chicago             
-    ##  date     2019-04-25                  
+    ##  date     2019-04-28                  
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  package     * version date       lib source        
@@ -149,7 +158,7 @@ devtools::session_info()
     ##  ggplot2     * 3.0.0   2018-07-03 [1] CRAN (R 3.5.0)
     ##  glue          1.2.0   2017-10-29 [1] CRAN (R 3.5.0)
     ##  gtable        0.2.0   2016-02-26 [1] CRAN (R 3.5.0)
-    ##  haven         1.1.2   2018-06-27 [1] CRAN (R 3.5.0)
+    ##  haven         2.1.0   2019-02-19 [1] CRAN (R 3.5.2)
     ##  hms           0.4.2   2018-03-10 [1] CRAN (R 3.5.0)
     ##  htmltools     0.3.6   2017-04-28 [1] CRAN (R 3.5.0)
     ##  httr          1.3.1   2017-08-20 [1] CRAN (R 3.5.0)

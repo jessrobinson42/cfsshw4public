@@ -62,12 +62,23 @@ map_dbl(x, square)
 ## Write a function to calculate length of sides in a right-triangle using the Pythagorean Theorem
 
 ```{r}
-#given the hypotenuse, this calculates the sides of a right-triangle
-pythagorean <- function(c){
-  sides <- sqrt(c/2)
-  return(sides)
+#where c is the hypotenuse 
+pythagorean <- function(a = NULL , b = NULL, c = NULL) {
+  sides <- c(a,b,c) 
+  if (length(sides) <= 1 | length(sides) >= 3) {
+  stop ("Please enter two sides.")
+  } else if (!is.numeric(sides)) {
+  stop ("Please enter numeric values.")
+  } else if (is.null(c)) { 
+  return (sqrt(a^2 + b^2)) 
+  } else if (is.null(b)) { 
+  return (sqrt(c^2 - a^2)) 
+  } else if (is.null(a)){
+  return (sqrt(c^2 - b^2))    
+  } else {
+  stop ("Please try again.")
+  }
 }
-pythagorean(73)
 ```
 
 ## Session info
