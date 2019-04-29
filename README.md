@@ -1,6 +1,5 @@
-# Homework 04: Programming
-================
-
+Homework #4: Programming
+-------------
 By Jess Robinson
 -------------
 

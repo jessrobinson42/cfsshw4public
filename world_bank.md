@@ -7,27 +7,36 @@ Load necessary libraries
 ------------------------
 
 ``` r
+#loading packages I might use 
 library(tidyverse)
 library(here)
 library(questionr)
 library(lubridate)
-theme_set(theme_minimal())
+#trying out a new theme for this assignment
+theme_set(theme_dark())
 ```
 
 Write a function to import the data files
 -----------------------------------------
 
 ``` r
+#create function to read files
 readtidy <- function(a){
+#read the files, skipping the first for rows
   readfile <- read_csv(file = a, skip = 4) 
+#tidying the data
      tidy <- readfile %>%
      rename(Country = "Country Name", cd = "Country Code", id = "Indicator Name",
             Indicator = "Indicator Code") %>% 
     gather(key = Year, value = values, "1960":"2016")  %>% 
     subset(select = -c(cd, id, X62)) %>% 
     spread(key = Indicator, value = values) %>%
+#change years from character to integer
     mutate("Year" = as.integer(Year)) %>%
+#select which variables I want to explore 
+#urban population rate, GDP, life expectancy, infant mortality 
     distinct(Country, Year, EN.URB.MCTY.TL.ZS, SP.DYN.LE00.IN, NY.GDP.MKTP.KN, SP.DYN.IMRT.IN) %>%
+#rename the variables
     rename(Urban = "EN.URB.MCTY.TL.ZS", LifeExp = "SP.DYN.LE00.IN", 
            GDP = "NY.GDP.MKTP.KN", InfMort="SP.DYN.IMRT.IN")
   return(tidy)
@@ -38,10 +47,15 @@ Import the data
 ---------------
 
 ``` r
+#identify dataframes
 worldbank <- dir("data_world_bank", 
           pattern = ".csv", 
           full.names = TRUE) 
+
+#import files using an iterative operation
 worldbank <- map_df(worldbank, readtidy)
+
+#bind the data into a single frame
 wb <- bind_rows(worldbank)
 ```
 
@@ -49,6 +63,7 @@ Explore the data
 ----------------
 
 ``` r
+#add decade variable
 wb <- wb %>%
   mutate(Decade = ifelse(Year %in% 1960:1969, "1960s",
         ifelse(Year %in% 1970:1979, "1970s",
@@ -58,8 +73,10 @@ wb <- wb %>%
         ifelse(Year %in% 2010:2016, "2010s", "N/A" )))))))
 
 wb %>%
-filter(Decade != "2010s") %>%
+#filter out 2010s so I can find average by dividing by 10
+filter(Decade != "2010s") %>% 
   mutate(AGDP = GDP/10) %>%
+  #plot GDP by decade
   ggplot(mapping = aes(x = Decade , y = AGDP, fill = Decade)) +
   geom_col() +
   labs(title = "Average Gross Domestic Product by Decade", 
@@ -73,6 +90,7 @@ filter(Decade != "2010s") %>%
 The plot above shows the average Gross Domestic product of all fifteen countries from 1960 to 2009. We can see a strong positive correlation between later decades and an increase in overall GDP.
 
 ``` r
+#plot percent urban population vs. life expectancy by country
 wb %>%
   ggplot(mapping = aes(x = Urban, y = LifeExp, color = Country)) +
   geom_point() +
@@ -87,6 +105,7 @@ wb %>%
 This plot shows that, for most countries in this dataset, as the rates of people living in urban areas increases, so too does the average life expectancy.
 
 ``` r
+#plot percent infant mortality vs. life expectancy by country
 wb %>%
   ggplot(mapping = aes(x = LifeExp, y = InfMort, color = Country)) +
   geom_point() +
@@ -98,11 +117,14 @@ wb %>%
 
 ![](world_bank_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
-This plot shows that, for most of the countries in this dataset, there is a strong negative correlation between life expectancy and infant mortality rate. That is, when the average life expectancy goes up, the infant mortality rate goes down.
+The plot shows that, for most of the countries in this dataset, there is a strong negative correlation between life expectancy and infant mortality rate. That is, when the average life expectancy goes up, the infant mortality rate goes down.
 
 ``` r
-wb %>% filter(Decade != "2010s") %>%
+wb %>% 
+#filter out 2010s so I can find average by dividing by 10
+  filter(Decade != "2010s") %>%
   mutate(ALE = LifeExp/10) %>%
+#plot avg. life expectancy each decade by country
   ggplot(mapping = aes(x = Country , y = ALE, fill = Country)) +
   geom_col() +
   facet_wrap(~ Decade) +
@@ -114,7 +136,7 @@ wb %>% filter(Decade != "2010s") %>%
 
 ![](world_bank_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-This chart shows the average life expectancy in each country in the data set by decade. This shows that, on average, the the life expectancy went up each decade. However, this also demonstrates that country is a larger factor in life expectancy than decade, rates over each decade tend to stay relatively similar, increasing only slightly compared to overall variance in life expectancy.
+The chart above shows the average life expectancy in each country in the data set by decade. This shows that, on average, the the life expectancy went up each decade. However, this also demonstrates that country is a larger factor in life expectancy than decade, rates over each decade tend to stay relatively similar, increasing only slightly compared to overall variance in life expectancy.
 
 Session info
 ------------
